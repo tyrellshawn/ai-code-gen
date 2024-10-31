@@ -2,14 +2,21 @@
 
 import { useState } from 'react'
 import { useCompletion } from 'ai/react'
+import dynamic from 'next/dynamic'
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Loader2 } from "lucide-react"
 
-export function Page() {
+const DynamicComponent = dynamic(() => import('@/components/DynamicComponent'), {
+  loading: () => <Loader2 className="animate-spin" />,
+  ssr: false
+})
+
+export default function ComponentGenerator() {
   const [generatedCode, setGeneratedCode] = useState<string>('')
+  const [key, setKey] = useState(0)
   const { complete, completion, isLoading } = useCompletion({
     api: '/api/generate-component',
   })
@@ -21,6 +28,7 @@ export function Page() {
     const result = await complete(prompt)
     if (result) {
       setGeneratedCode(result)
+      setKey(prevKey => prevKey + 1) // Force re-render of DynamicComponent
     }
   }
 
@@ -67,7 +75,7 @@ export function Page() {
               </TabsContent>
               <TabsContent value="preview">
                 <div className="border p-4 rounded-md">
-                  <p className="text-sm text-gray-500 mb-2">Preview not available. Implement component rendering here.</p>
+                  <DynamicComponent key={key} code={completion || generatedCode} />
                 </div>
               </TabsContent>
             </Tabs>
