@@ -73,7 +73,7 @@ const DynamicComponent: React.FC<{ code: string }> = ({ code }) => {
     const cleanedCode = cleanCode(code);
 
     return (
-        <LiveProvider code={cleanedCode} scope={scope}>
+        <LiveProvider code={cleanedCode} scope={scope} noInline>
             <LivePreview />
             <LiveError />
         </LiveProvider>

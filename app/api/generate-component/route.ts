@@ -27,32 +27,21 @@ export async function POST(req: Request) {
     - Omit import statements entirely.
     - Include a clear component definition that starts with const and ends with the component rendering, such as:
       
-      const RedButton = () => {
-          const [isRed, setIsRed] = React.useState(false);
-      
-          const handleClick = () => {
-              setIsRed(!isRed);
-          };
-      
-          return (
-              <button
-                  onClick={handleClick}
-                  style={{
-                      backgroundColor: isRed ? 'red' : 'initial',
-                      color: 'white',
-                      padding: '10px 20px',
-                      border: 'none',
-                      borderRadius: '5px',
-                      cursor: 'pointer',
-                  }}
-              >
-                  Click me
-              </button>
-          );
-      };
-      
-      // Render the component
-      <RedButton />
+        const ColorButton = () => {
+        const [color, setColor] = React.useState('blue');
+
+        const handleClick = () => {
+            setColor('red');
+        };
+
+        return (
+            <button style={{ backgroundColor: color }} onClick={handleClick}>
+            Click me
+            </button>
+        );
+        };
+        render(<ColorButton />)
+
     
     - Do not provide any text or comments before or after the code.
     - Avoid TypeScript types, imports, or any non-JavaScript syntax.
